@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { PhotoBand } from "@/components/PhotoBand";
 import { photos } from "@/lib/photos";
 
 const days = [
@@ -131,16 +132,22 @@ export default function Free() {
               <a href="#" className="small">Share with Lina</a>
             </div>
 
-            <div className="card" style={{ marginTop: "var(--space-4)", background: "var(--ink)", color: "var(--sand)", borderColor: "var(--ink)", display: "grid", gap: "var(--space-4)" }}>
-              <span className="tag tag-pine" style={{ justifySelf: "start" }}>Premium</span>
-              <h3 style={{ color: "var(--sand)" }}>Don&apos;t have a next trip yet?</h3>
-              <p className="small" style={{ opacity: 0.85 }}>A concierge finds one every month and books it for you. $12.99 a month, first week free.</p>
-              <form action="/api/checkout" method="POST">
-                <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>Start your free week</button>
-              </form>
-              <Link href="/premium" className="small" style={{ color: "var(--sand)" }}>See the member view</Link>
-            </div>
           </div>
+        </div>
+      </section>
+
+      {/* The push to Premium, where the free flow naturally ends: the trip is planned, what's next? */}
+      <PhotoBand
+        photo={photos.mykines}
+        eyebrow="After Santorini"
+        title="This one's planned. The next one, we'll find."
+        body="The same concierge that filled in these days already knows you skipped the seafood and walked the caldera. Premium members get one trip a month it knows they'll love, priced and booked when they say yes."
+        cta={{ label: "Start your free week", href: "/#pricing" }}
+      />
+      <section className="section" style={{ paddingTop: "var(--space-10)" }}>
+        <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "var(--space-4)" }}>
+          <p className="small muted">$12.99 a month after a free week. Everything on this page stays free either way.</p>
+          <Link href="/premium" className="small">See what a member sees</Link>
         </div>
       </section>
 

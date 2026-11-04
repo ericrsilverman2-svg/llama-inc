@@ -47,7 +47,7 @@ export default function Home() {
             Go somewhere you can&apos;t pronounce.
           </h1>
           <p style={{ margin: "var(--space-6) auto 0", maxWidth: "44ch", fontSize: 19, lineHeight: "28px" }}>
-            One trip a month, found and booked by a concierge who knows what you like. $12.99 a month.
+            Trips you couldn&apos;t imagine, found and booked by a concierge who knows what you love.
           </p>
           <div style={{ display: "flex", gap: "var(--space-4)", justifyContent: "center", marginTop: "var(--space-10)", flexWrap: "wrap" }}>
             <a href="#pricing" className="btn btn-primary">Start your free week</a>
@@ -62,7 +62,53 @@ export default function Home() {
         </div>
       </section>
 
-      {/* This month: three portrait cards */}
+      {/* The shared promise, in one line */}
+      <section className="section" style={{ paddingBottom: "var(--space-10)" }}>
+        <div className="container">
+          <div className="label">How it works</div>
+          <h2 style={{ marginTop: "var(--space-4)", maxWidth: "22ch" }}>
+            A concierge that learns what you love. Bring a trip, or let it bring you one.
+          </h2>
+        </div>
+      </section>
+
+      {/* ===== Sell 1: Free ===== */}
+      <PhotoBand
+        photo={photos.capoCaccia}
+        eyebrow="Free"
+        title="Already have a trip? We'll make it the best version of itself."
+        body="Paste your flights and a hotel. The concierge fills in the days with the places it knows you'll love, and moves everything when your plans do."
+        cta={{ label: "Plan a trip you have, free", href: "/free" }}
+      />
+      <section id="free" className="section">
+        <div className="container grid g3">
+          <div>
+            <div className="label">Knows you</div>
+            <h3 style={{ marginTop: "var(--space-2)" }}>Not the top ten list</h3>
+            <p className="small muted" style={{ marginTop: "var(--space-2)" }}>Say &ldquo;no seafood&rdquo; or &ldquo;we have a toddler&rdquo; once and every day adjusts.</p>
+          </div>
+          <div>
+            <div className="label">Bookable</div>
+            <h3 style={{ marginTop: "var(--space-2)" }}>Tables that take bookings</h3>
+            <p className="small muted" style={{ marginTop: "var(--space-2)" }}>Every restaurant on the plan is one you can actually get into, with the right time slot.</p>
+          </div>
+          <div>
+            <div className="label">Yours</div>
+            <h3 style={{ marginTop: "var(--space-2)" }}>Swap anything</h3>
+            <p className="small muted" style={{ marginTop: "var(--space-2)" }}>One trip at a time, up to five days, on your calendar and your phone. No card needed.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== Sell 2: Premium ===== */}
+      <PhotoBand
+        photo={photos.zurich}
+        eyebrow="Premium"
+        title="Don't have the next one yet? We'll find it, and book it."
+        body="Every month the same concierge sends one trip it knows you'll love, fully priced. Say yes and the flight, the stay and the table are booked. Say no and it keeps looking."
+        cta={{ label: "Start your free week", href: "#pricing" }}
+        align="right"
+      />
       <section className="section">
         <div className="container">
           <div className="label">This month, for a member in Los Angeles</div>
@@ -73,50 +119,11 @@ export default function Home() {
             ))}
           </div>
           <p className="small muted" style={{ marginTop: "var(--space-6)" }}>
-            Prices are illustrative. Members see live fares in their own currency.
+            Prices are illustrative. Members see live fares in their own currency.{" "}
+            <Link href="/premium">See the member view</Link>
           </p>
         </div>
       </section>
-
-      {/* Band: the split, told on a photo */}
-      <PhotoBand
-        photo={photos.capoCaccia}
-        eyebrow="How it works"
-        title="Free plans the trip you have. Premium finds the next one."
-        body="Paste your flights and a hotel and the free plan fills in the days. Premium members get one trip a month, priced, with the yes button."
-        cta={{ label: "See the free plan", href: "/free" }}
-      />
-
-      {/* The two plans, briefly, on sand */}
-      <section id="how" className="section">
-        <div className="container grid g2">
-          <div className="card" style={{ background: "var(--sky)", borderColor: "transparent" }}>
-            <div className="label">Free</div>
-            <h3 style={{ marginTop: "var(--space-2)" }}>You already have a trip</h3>
-            <p style={{ marginTop: "var(--space-4)" }}>
-              Restaurants that take bookings, the walk that is better at dusk, what to skip. Change anything and the plan moves with you.
-            </p>
-            <Link href="/free" style={{ display: "inline-block", marginTop: "var(--space-4)" }}>Open the free plan</Link>
-          </div>
-          <div className="card">
-            <div className="label" style={{ color: "var(--pine)" }}>Premium</div>
-            <h3 style={{ marginTop: "var(--space-2)" }}>You want a reason to go</h3>
-            <p style={{ marginTop: "var(--space-4)" }}>
-              Once a month your concierge sends one trip, fully priced, with the flight, the stay and the thing you will talk about for years. Say yes and it is booked.
-            </p>
-            <Link href="/premium" style={{ display: "inline-block", marginTop: "var(--space-4)" }}>See the member view</Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Band: booked, not bookmarked */}
-      <PhotoBand
-        photo={photos.zurich}
-        eyebrow="Booked, not bookmarked"
-        title="We handle the part that never gets done"
-        body="Most trips die in a browser tab. A Premium concierge books the flight, holds the room, reserves the table and puts it all on one calendar. You pack."
-        align="right"
-      />
 
       {/* Pricing */}
       <section id="pricing" className="section">
