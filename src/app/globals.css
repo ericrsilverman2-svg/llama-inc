@@ -1,49 +1,201 @@
+/* Llama Inc. tokens. Source of truth: the Llama Inc. design system. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --sand: #f6f1e7;
+  --paper: #fffdf8;
+  --ink: #1c1a17;
+  --muted: #5e5850;
+  --clay: #c4542b;
+  --on-clay: #ffffff;
+  --pine: #1f4d3a;
+  --on-pine: #ffffff;
+  --sky: #d9e7ee;
+  --hairline: #ded5c5;
+  --danger: #a8261d;
+  --scrim: #141311;
+  --on-photo: #f6f1e7;
+
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-10: 40px;
+  --space-16: 64px;
+
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-pill: 999px;
+
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --max: 1120px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --sand: #17171a;
+    --paper: #222227;
+    --ink: #f3eee4;
+    --muted: #b5aca0;
+    --clay: #e07a4f;
+    --on-clay: #1c1a17;
+    --pine: #7dbf9c;
+    --on-pine: #17171a;
+    --sky: #263640;
+    --hairline: #34343b;
+    --danger: #f2918a;
   }
-}
-
-html {
-  height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
   margin: 0;
+  background: var(--sand);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 26px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  margin: 0;
+  font-variation-settings: "opsz" 144;
+}
+
+h1 {
+  font-size: 64px;
+  line-height: 60px;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 40px;
+  line-height: 44px;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 30px;
+}
+
+p {
+  margin: 0;
+  max-width: 60ch;
 }
 
 a {
   color: inherit;
-  text-decoration: none;
+  text-decoration-color: var(--clay);
+  text-underline-offset: 3px;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+button,
+input {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--pine);
+  outline-offset: 2px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.label {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.small {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: 0 var(--space-6);
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--clay);
+  color: var(--on-clay);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--hairline);
+}
+
+.btn-photo {
+  background: var(--on-photo);
+  color: var(--scrim);
+}
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.section {
+  padding: var(--space-16) 0;
+}
+
+@media (min-width: 900px) {
+  .card {
+    padding: var(--space-6);
+  }
+  .section {
+    padding: 96px 0;
+  }
+  .container {
+    padding: 0 var(--space-6);
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 44px;
+    line-height: 44px;
+  }
+  h2 {
+    font-size: 32px;
+    line-height: 36px;
   }
 }

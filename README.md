@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Llama Inc.
 
-## Getting Started
+A travel concierge with one paid plan, Premium at $12.99 a month, sold through
+Stripe-hosted Checkout in sandbox mode. Built for a Stripe PM written exercise.
 
-First, run the development server:
+## Stack
+
+Next.js (App Router), plain CSS tokens, the `stripe` Node SDK. No database: the
+success page reads the Checkout Session back from Stripe, and the webhook logs
+events. Photos are hot-linked from Unsplash under the Unsplash License and
+credited in the footer.
+
+## Run locally
 
 ```bash
+npm install
+cp .env.example .env.local   # fill in the three Stripe values
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then, in a second terminal, forward webhooks:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+stripe listen --forward-to localhost:3000/api/webhook
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy the `whsec_...` it prints into `STRIPE_WEBHOOK_SECRET`.
 
-## Learn More
+## Stripe setup (sandbox)
 
-To learn more about Next.js, take a look at the following resources:
+1. Product catalog: create "Premium", recurring, $12.99 USD monthly. Copy the price id into `STRIPE_PRICE_ID`.
+2. Settings > Branding (Checkout): brand color `#C4542B`, accent `#1F4D3A`.
+3. Settings > Billing > Customer portal: enable payment method updates and cancellation.
+4. Optional: Settings > Payments > Adaptive Pricing, so global buyers pay in their currency.
+5. Workbench > Webhooks: add the Vercel URL `/api/webhook` with `checkout.session.completed`, `invoice.paid`, `invoice.payment_failed`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Route | What it does |
+| --- | --- |
+| `POST /api/checkout` | Creates a subscription-mode Checkout Session (7-day trial, promotion codes on) and redirects to it. Idempotency key per request. |
+| `GET /success?session_id=` | Retrieves the session and shows status, email, trial end, and a portal button. |
+| `POST /api/portal` | Creates a customer portal session for the customer on that Checkout Session. |
+| `POST /api/webhook` | Verifies the signature, dedupes on `event.id`, logs the three events. |
 
-## Deploy on Vercel
+## Test
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Card `4242 4242 4242 4242`, any future expiry, any CVC. With the trial, the first
+invoice is $0; `invoice.paid` still fires.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy
+
+Push to GitHub, import into Vercel, add the four env vars from `.env.example`,
+then register the webhook URL in Stripe.
