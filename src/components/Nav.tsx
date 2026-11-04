@@ -23,11 +23,14 @@ export function Nav({ onPhoto = false }: { onPhoto?: boolean }) {
         Llama Inc.
       </Link>
       <div style={{ display: "flex", gap: "var(--space-6)", alignItems: "center" }}>
-        <a href="#how" className="small" style={{ textDecoration: "none" }}>
-          How it works
-        </a>
-        <a href="#pricing" className="small" style={{ textDecoration: "none" }}>
+        <Link href="/free" className="small" style={{ textDecoration: "none" }}>
+          Free
+        </Link>
+        <Link href="/premium" className="small" style={{ textDecoration: "none" }}>
           Premium
+        </Link>
+        <a href="/#pricing" className="small" style={{ textDecoration: "none" }}>
+          Pricing
         </a>
       </div>
     </nav>

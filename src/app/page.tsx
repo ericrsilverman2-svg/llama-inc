@@ -1,36 +1,39 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { PhotoCard } from "@/components/PhotoCard";
+import { PhotoBand } from "@/components/PhotoBand";
 import { photos } from "@/lib/photos";
+
+const picks = [
+  { photo: photos.thoddoo, eyebrow: "Fare drop", deal: "LAX to Malé from $690 round trip, 5 nights on a local island" },
+  { photo: photos.beloHorizonte, eyebrow: "Rarely available", deal: "Two nights in a 1960s concrete house in the forest, by invitation" },
+  { photo: photos.lauterbrunnen, eyebrow: "Once a year", deal: "The valley before the lifts open, 4 nights, train from Zürich included" },
+];
+
+const ticker = [
+  "Mykines · 6 nights · $1,940",
+  "Kaafu Atoll · 5 nights · $2,210",
+  "Meteora monastery guesthouse · April only",
+  "Lauterbrunnen · 4 nights · $1,480",
+  "Capo Caccia · 3 nights · $760",
+];
 
 export default function Home() {
   return (
     <main>
-      {/* Hero: full-bleed photo, headline over the scrim */}
+      {/* Hero: headline first, photo kept bright. Scrim only at the edges. */}
       <section
-        style={{
-          position: "relative",
-          minHeight: "100svh",
-          display: "flex",
-          flexDirection: "column",
-          background: "var(--sand)",
-        }}
+        style={{ position: "relative", minHeight: "100svh", display: "flex", flexDirection: "column", background: "var(--sand)" }}
       >
-        <Image
-          src={photos.sognefjord.src}
-          alt={photos.sognefjord.alt}
-          fill
-          priority
-          sizes="100vw"
-          style={{ objectFit: "cover" }}
-        />
+        <Image src={photos.kaafu.src} alt={photos.kaafu.alt} fill priority sizes="100vw" style={{ objectFit: "cover" }} />
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(to bottom, rgba(20,19,17,0.15) 0%, rgba(20,19,17,0) 25%, var(--scrim) 100%)",
+              "linear-gradient(to bottom, rgba(20,19,17,0.35) 0%, rgba(20,19,17,0.18) 45%, rgba(20,19,17,0.18) 70%, var(--scrim) 100%)",
           }}
         />
         <div style={{ position: "relative" }}>
@@ -38,105 +41,36 @@ export default function Home() {
         </div>
         <div
           className="container"
-          style={{
-            position: "relative",
-            marginTop: "auto",
-            paddingBottom: "var(--space-16)",
-            color: "var(--on-photo)",
-          }}
+          style={{ position: "relative", margin: "auto 0", textAlign: "center", color: "var(--on-photo)", textShadow: "0 1px 24px rgba(20,19,17,0.45)" }}
         >
-          <div className="label" style={{ color: "var(--on-photo)", opacity: 0.8 }}>
-            {photos.sognefjord.place}
-          </div>
-          <h1 style={{ marginTop: "var(--space-4)", maxWidth: 14 + "ch" }}>
-            Every month, a trip worth taking. Booked for you.
+          <h1 className="hero-h1" style={{ margin: "0 auto", maxWidth: "12ch" }}>
+            Go somewhere you can&apos;t pronounce.
           </h1>
-          <p style={{ marginTop: "var(--space-6)", maxWidth: "48ch", fontSize: 19, lineHeight: "28px" }}>
-            Llama Inc. is a travel concierge. Tell us what moves you and we will
-            find the fare drops, the rooms that are never free, and the
-            once-a-year experiences, then book all of it when you say yes.
+          <p style={{ margin: "var(--space-6) auto 0", maxWidth: "44ch", fontSize: 19, lineHeight: "28px" }}>
+            One trip a month, found and booked by a concierge who knows what you like. $12.99 a month.
           </p>
-          <div style={{ display: "flex", gap: "var(--space-4)", marginTop: "var(--space-10)", flexWrap: "wrap" }}>
-            <a href="#pricing" className="btn btn-primary">
-              Start Premium, $12.99 a month
-            </a>
-            <a href="#how" className="btn btn-photo">
-              See how it works
-            </a>
+          <div style={{ display: "flex", gap: "var(--space-4)", justifyContent: "center", marginTop: "var(--space-10)", flexWrap: "wrap" }}>
+            <a href="#pricing" className="btn btn-primary">Start your free week</a>
+            <Link href="/free" className="btn btn-photo">Try it free with a trip you have</Link>
           </div>
+        </div>
+        <div className="container ticker" style={{ position: "relative", color: "var(--on-photo)" }}>
+          <span><b>This month</b></span>
+          {ticker.map((t) => (
+            <span key={t}>{t}</span>
+          ))}
         </div>
       </section>
 
-      {/* How it works: free is reactive, Premium is proactive */}
-      <section id="how" className="section">
-        <div className="container">
-          <div className="label">How it works</div>
-          <h2 style={{ marginTop: "var(--space-4)", maxWidth: "18ch" }}>
-            Free plans the trip you have. Premium finds the next one.
-          </h2>
-          <div
-            style={{
-              display: "grid",
-              gap: "var(--space-6)",
-              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-              marginTop: "var(--space-10)",
-            }}
-          >
-            <div className="card" style={{ background: "var(--sky)", borderColor: "transparent" }}>
-              <div className="label">Free</div>
-              <h3 style={{ marginTop: "var(--space-2)" }}>You already have a trip</h3>
-              <p style={{ marginTop: "var(--space-4)" }}>
-                Paste your flights and hotel. We fill in the days: restaurants that
-                take bookings, the walk that is better at dusk, what to skip. Change
-                anything and the plan moves with you.
-              </p>
-            </div>
-            <div className="card">
-              <div className="label" style={{ color: "var(--pine)" }}>
-                Premium
-              </div>
-              <h3 style={{ marginTop: "var(--space-2)" }}>You want a reason to go</h3>
-              <p style={{ marginTop: "var(--space-4)" }}>
-                Once a month your concierge sends one trip, fully priced, with the
-                flight, the stay and the thing you will talk about for years. Say
-                yes and it is booked, in your currency, on your card. Say no and we
-                keep looking.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* This month: three portrait cards, place name as the only text */}
-      <section className="section" style={{ paddingTop: 0 }}>
+      {/* This month: three portrait cards */}
+      <section className="section">
         <div className="container">
           <div className="label">This month, for a member in Los Angeles</div>
-          <h2 style={{ marginTop: "var(--space-4)", maxWidth: "20ch" }}>
-            Three trips the concierge found this week
-          </h2>
-          <div
-            style={{
-              display: "grid",
-              gap: "var(--space-6)",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              marginTop: "var(--space-10)",
-            }}
-          >
-            <PhotoCard
-              photo={photos.mykines}
-              eyebrow="Fare drop"
-              deal="LAX to Vágar from $540 round trip, 6 nights in a turf-roof house"
-            />
-            <PhotoCard
-              photo={photos.meteora}
-              eyebrow="Rarely available"
-              deal="Two nights inside the monastery guesthouse, April only"
-            />
-            <PhotoCard
-              photo={photos.uyuni}
-              eyebrow="Once a year"
-              deal="The wet season mirror, 4 nights, driver and salt hotel included"
-            />
+          <h2 style={{ marginTop: "var(--space-4)", maxWidth: "20ch" }}>Three trips the concierge found this week</h2>
+          <div className="grid g3" style={{ marginTop: "var(--space-10)" }}>
+            {picks.map((p) => (
+              <PhotoCard key={p.photo.id} photo={p.photo} eyebrow={p.eyebrow} deal={p.deal} />
+            ))}
           </div>
           <p className="small muted" style={{ marginTop: "var(--space-6)" }}>
             Prices are illustrative. Members see live fares in their own currency.
@@ -144,65 +78,60 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Feature: 3:2 photo beside copy */}
-      <section className="section" style={{ paddingTop: 0 }}>
-        <div
-          className="container"
-          style={{
-            display: "grid",
-            gap: "var(--space-10)",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            alignItems: "center",
-          }}
-        >
-          <div
-            style={{
-              position: "relative",
-              aspectRatio: "3 / 2",
-              borderRadius: "var(--radius-md)",
-              overflow: "hidden",
-              background: "var(--sand)",
-            }}
-          >
-            <Image
-              src={photos.deathValley.src}
-              alt={photos.deathValley.alt}
-              fill
-              sizes="(min-width: 900px) 540px, 100vw"
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-          <div>
-            <div className="label">Booked, not bookmarked</div>
-            <h2 style={{ marginTop: "var(--space-4)" }}>We handle the part that never gets done</h2>
-            <p style={{ marginTop: "var(--space-6)" }}>
-              Most trips die in a browser tab. A Premium concierge books the flight,
-              holds the room, reserves the table and puts it all on one calendar,
-              with every confirmation in one thread. You pack.
+      {/* Band: the split, told on a photo */}
+      <PhotoBand
+        photo={photos.capoCaccia}
+        eyebrow="How it works"
+        title="Free plans the trip you have. Premium finds the next one."
+        body="Paste your flights and a hotel and the free plan fills in the days. Premium members get one trip a month, priced, with the yes button."
+        cta={{ label: "See the free plan", href: "/free" }}
+      />
+
+      {/* The two plans, briefly, on sand */}
+      <section id="how" className="section">
+        <div className="container grid g2">
+          <div className="card" style={{ background: "var(--sky)", borderColor: "transparent" }}>
+            <div className="label">Free</div>
+            <h3 style={{ marginTop: "var(--space-2)" }}>You already have a trip</h3>
+            <p style={{ marginTop: "var(--space-4)" }}>
+              Restaurants that take bookings, the walk that is better at dusk, what to skip. Change anything and the plan moves with you.
             </p>
+            <Link href="/free" style={{ display: "inline-block", marginTop: "var(--space-4)" }}>Open the free plan</Link>
+          </div>
+          <div className="card">
+            <div className="label" style={{ color: "var(--pine)" }}>Premium</div>
+            <h3 style={{ marginTop: "var(--space-2)" }}>You want a reason to go</h3>
+            <p style={{ marginTop: "var(--space-4)" }}>
+              Once a month your concierge sends one trip, fully priced, with the flight, the stay and the thing you will talk about for years. Say yes and it is booked.
+            </p>
+            <Link href="/premium" style={{ display: "inline-block", marginTop: "var(--space-4)" }}>See the member view</Link>
           </div>
         </div>
       </section>
 
-      {/* Pricing: one tier, one card, one button */}
-      <section id="pricing" className="section" style={{ borderTop: "1px solid var(--hairline)" }}>
-        <div className="container" style={{ display: "grid", gap: "var(--space-10)", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", alignItems: "start" }}>
+      {/* Band: booked, not bookmarked */}
+      <PhotoBand
+        photo={photos.zurich}
+        eyebrow="Booked, not bookmarked"
+        title="We handle the part that never gets done"
+        body="Most trips die in a browser tab. A Premium concierge books the flight, holds the room, reserves the table and puts it all on one calendar. You pack."
+        align="right"
+      />
+
+      {/* Pricing */}
+      <section id="pricing" className="section">
+        <div className="container grid g2" style={{ alignItems: "start" }}>
           <div>
             <div className="label">Premium</div>
             <h2 style={{ marginTop: "var(--space-4)", maxWidth: "16ch" }}>One plan. Cancel from your account page.</h2>
             <p style={{ marginTop: "var(--space-6)" }}>
-              Members anywhere in the world pay in their own currency. Your first
-              week is free; we will email you two days before it ends.
+              Members anywhere in the world pay in their own currency. Your first week is free; we will email you two days before it ends.
             </p>
           </div>
           <div className="card" style={{ display: "grid", gap: "var(--space-4)" }}>
-            <div className="label" style={{ color: "var(--pine)" }}>
-              Premium concierge
-            </div>
+            <div className="label" style={{ color: "var(--pine)" }}>Premium concierge</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: "var(--space-2)" }}>
-              <span style={{ fontSize: 48, lineHeight: "48px", fontWeight: 500, letterSpacing: "-0.02em" }}>
-                $12.99
-              </span>
+              <span className="price">$12.99</span>
               <span>a month</span>
             </div>
             <ul style={{ margin: 0, paddingLeft: "1.2em", display: "grid", gap: "var(--space-2)" }}>
@@ -212,16 +141,15 @@ export default function Home() {
               <li>A human planner when the concierge is unsure</li>
             </ul>
             <form action="/api/checkout" method="POST">
-              <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>
-                Start your free week
-              </button>
+              <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>Start your free week</button>
             </form>
-            <p className="small muted">
-              $12.99 a month after 7 days. Cancel anytime from your account page.
-            </p>
+            <p className="small muted">$12.99 a month after 7 days. Cancel anytime from your account page.</p>
           </div>
         </div>
       </section>
+
+      {/* Closing band */}
+      <PhotoBand photo={photos.gruyeres} title="Somewhere is waiting." cta={{ label: "Start your free week", href: "#pricing" }} height="60svh" />
 
       <Footer />
     </main>
