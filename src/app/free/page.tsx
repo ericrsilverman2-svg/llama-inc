@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { ParallaxImage } from "@/components/ParallaxImage";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -38,13 +38,13 @@ const days = [
 export default function Free() {
   return (
     <main>
-      <section className="photo" style={{ position: "relative", height: "42svh", minHeight: 300, display: "flex", flexDirection: "column" }}>
-        <Image src={photos.oia.src} alt={photos.oia.alt} fill priority sizes="100vw" style={{ objectFit: "cover" }} />
+      <section className="photo" data-reveal style={{ position: "relative", overflow: "hidden", height: "42svh", minHeight: 300, display: "flex", flexDirection: "column" }}>
+        <ParallaxImage photo={photos.oia} priority />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(20,19,17,0.2) 0%, rgba(20,19,17,0) 35%, var(--scrim) 100%)" }} />
         <div style={{ position: "relative" }}>
           <Nav onPhoto />
         </div>
-        <div className="container" style={{ position: "relative", marginTop: "auto", paddingBottom: "var(--space-6)", color: "var(--on-photo)" }}>
+        <div className="container fx-up" style={{ position: "relative", marginTop: "auto", paddingBottom: "var(--space-6)", color: "var(--on-photo)", textShadow: "0 1px 24px rgba(20,19,17,0.55)" }}>
           <span className="tag tag-sky">Free</span>
           <h1 style={{ marginTop: "var(--space-4)", maxWidth: "14ch", fontSize: 48, lineHeight: "48px" }}>Plan the trip you already have.</h1>
         </div>
@@ -142,7 +142,7 @@ export default function Free() {
         eyebrow="After Santorini"
         title="This one's planned. The next one, we'll find."
         body="The same concierge that filled in these days already knows you skipped the seafood and walked the caldera. Premium members get one trip a month it knows they'll love, priced and booked when they say yes."
-        cta={{ label: "Start your free week", href: "/#pricing" }}
+        cta={{ label: "Get Started", href: "/#pricing" }}
       />
       <section className="section" style={{ paddingTop: "var(--space-10)" }}>
         <div className="container" style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: "var(--space-4)" }}>

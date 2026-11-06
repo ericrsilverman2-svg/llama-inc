@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { ParallaxImage } from "@/components/ParallaxImage";
 import Link from "next/link";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -25,9 +25,10 @@ export default function Home() {
     <main>
       {/* Hero: headline first, photo kept bright. Scrim only at the edges. */}
       <section
-        style={{ position: "relative", minHeight: "100svh", display: "flex", flexDirection: "column", background: "var(--sand)" }}
+        data-reveal
+        style={{ position: "relative", overflow: "hidden", minHeight: "100svh", display: "flex", flexDirection: "column", background: "var(--sand)" }}
       >
-        <Image src={photos.kaafu.src} alt={photos.kaafu.alt} fill priority sizes="100vw" style={{ objectFit: "cover" }} />
+        <ParallaxImage photo={photos.kaafu} speed={0.22} priority />
         <div
           style={{
             position: "absolute",
@@ -40,18 +41,34 @@ export default function Home() {
           <Nav onPhoto />
         </div>
         <div
-          className="container"
-          style={{ position: "relative", margin: "auto 0", textAlign: "center", color: "var(--on-photo)", textShadow: "0 1px 24px rgba(20,19,17,0.45)" }}
+          className="container fx-up"
+          style={{ position: "relative", margin: "auto", textAlign: "center", color: "var(--on-photo)", textShadow: "0 1px 24px rgba(20,19,17,0.45)" }}
         >
-          <h1 className="hero-h1" style={{ margin: "0 auto", maxWidth: "12ch" }}>
+          <h1 className="hero-h1" style={{ margin: "0 auto", maxWidth: "14ch", textWrap: "balance" }}>
             Go somewhere you can&apos;t pronounce.
           </h1>
-          <p style={{ margin: "var(--space-6) auto 0", maxWidth: "44ch", fontSize: 19, lineHeight: "28px" }}>
+          <p style={{ margin: "var(--space-6) auto 0", maxWidth: "44ch", fontSize: 19, lineHeight: "28px", textWrap: "balance" }}>
             Trips you couldn&apos;t imagine, found and booked by a concierge who knows what you love.
           </p>
-          <div style={{ display: "flex", gap: "var(--space-4)", justifyContent: "center", marginTop: "var(--space-10)", flexWrap: "wrap" }}>
-            <a href="#pricing" className="btn btn-primary">Start your free week</a>
-            <Link href="/free" className="btn btn-photo">Try it free with a trip you have</Link>
+          <div className="plans">
+            <div className="plan">
+              <div className="label">Free</div>
+              <div className="plan-price">$0</div>
+              <p>Already have a trip? Bring it, and the concierge plans every day around what you love.</p>
+              <Link href="/free" className="btn btn-photo">Start free</Link>
+            </div>
+            <div className="plan plan-featured">
+              <div className="label">
+                Premium <span className="tag tag-clay">7-day free trial</span>
+              </div>
+              <div className="plan-price">
+                $12.99 <span>a month</span>
+              </div>
+              <p>Don&apos;t have the next one yet? Curated trips on-demand, found and booked for you.</p>
+              <form action="/api/checkout" method="POST">
+                <button type="submit" className="btn btn-primary">Get Started</button>
+              </form>
+            </div>
           </div>
         </div>
         <div className="container ticker" style={{ position: "relative", color: "var(--on-photo)" }}>
@@ -63,8 +80,8 @@ export default function Home() {
       </section>
 
       {/* The shared promise, in one line */}
-      <section className="section" style={{ paddingBottom: "var(--space-10)" }}>
-        <div className="container">
+      <section className="section" data-reveal style={{ paddingBottom: "var(--space-10)" }}>
+        <div className="container fx-up">
           <div className="label">How it works</div>
           <h2 style={{ marginTop: "var(--space-4)", maxWidth: "22ch" }}>
             A concierge that learns what you love. Bring a trip, or let it bring you one.
@@ -80,19 +97,19 @@ export default function Home() {
         body="Paste your flights and a hotel. The concierge fills in the days with the places it knows you'll love, and moves everything when your plans do."
         cta={{ label: "Plan a trip you have, free", href: "/free" }}
       />
-      <section id="free" className="section">
+      <section id="free" className="section" data-reveal>
         <div className="container grid g3">
-          <div>
+          <div className="fx-up">
             <div className="label">Knows you</div>
             <h3 style={{ marginTop: "var(--space-2)" }}>Not the top ten list</h3>
             <p className="small muted" style={{ marginTop: "var(--space-2)" }}>Say &ldquo;no seafood&rdquo; or &ldquo;we have a toddler&rdquo; once and every day adjusts.</p>
           </div>
-          <div>
+          <div className="fx-up" style={{ transitionDelay: "120ms" }}>
             <div className="label">Bookable</div>
             <h3 style={{ marginTop: "var(--space-2)" }}>Tables that take bookings</h3>
             <p className="small muted" style={{ marginTop: "var(--space-2)" }}>Every restaurant on the plan is one you can actually get into, with the right time slot.</p>
           </div>
-          <div>
+          <div className="fx-up" style={{ transitionDelay: "240ms" }}>
             <div className="label">Yours</div>
             <h3 style={{ marginTop: "var(--space-2)" }}>Swap anything</h3>
             <p className="small muted" style={{ marginTop: "var(--space-2)" }}>One trip at a time, up to five days, on your calendar and your phone. No card needed.</p>
@@ -106,16 +123,18 @@ export default function Home() {
         eyebrow="Premium"
         title="Don't have the next one yet? We'll find it, and book it."
         body="Every month the same concierge sends one trip it knows you'll love, fully priced. Say yes and the flight, the stay and the table are booked. Say no and it keeps looking."
-        cta={{ label: "Start your free week", href: "#pricing" }}
+        cta={{ label: "Get Started", href: "#pricing" }}
         align="right"
       />
-      <section className="section">
+      <section className="section" data-reveal>
         <div className="container">
-          <div className="label">This month, for a member in Los Angeles</div>
-          <h2 style={{ marginTop: "var(--space-4)", maxWidth: "20ch" }}>Three trips the concierge found this week</h2>
+          <div className="label fx-up">This month, for a member in Los Angeles</div>
+          <h2 className="fx-up" style={{ marginTop: "var(--space-4)", maxWidth: "20ch" }}>Three trips the concierge found this week</h2>
           <div className="grid g3" style={{ marginTop: "var(--space-10)" }}>
-            {picks.map((p) => (
-              <PhotoCard key={p.photo.id} photo={p.photo} eyebrow={p.eyebrow} deal={p.deal} />
+            {picks.map((p, i) => (
+              <div key={p.photo.id} className="fx-up" style={{ transitionDelay: `${120 + i * 120}ms` }}>
+                <PhotoCard photo={p.photo} eyebrow={p.eyebrow} deal={p.deal} />
+              </div>
             ))}
           </div>
           <p className="small muted" style={{ marginTop: "var(--space-6)" }}>
@@ -126,29 +145,26 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="section">
+      <section id="pricing" className="section" data-reveal>
         <div className="container grid g2" style={{ alignItems: "start" }}>
-          <div>
+          <div className="fx-up">
             <div className="label">Premium</div>
-            <h2 style={{ marginTop: "var(--space-4)", maxWidth: "16ch" }}>One plan. Cancel from your account page.</h2>
-            <p style={{ marginTop: "var(--space-6)" }}>
-              Members anywhere in the world pay in their own currency. Your first week is free; we will email you two days before it ends.
-            </p>
+            <h2 style={{ marginTop: "var(--space-4)", maxWidth: "22ch" }}>All you have to do is say &ldquo;Yes&rdquo;.</h2>
           </div>
-          <div className="card" style={{ display: "grid", gap: "var(--space-4)" }}>
+          <div className="card fx-up" style={{ display: "grid", gap: "var(--space-4)", transitionDelay: "140ms" }}>
             <div className="label" style={{ color: "var(--pine)" }}>Premium concierge</div>
             <div style={{ display: "flex", alignItems: "baseline", gap: "var(--space-2)" }}>
               <span className="price">$12.99</span>
               <span>a month</span>
             </div>
             <ul style={{ margin: 0, paddingLeft: "1.2em", display: "grid", gap: "var(--space-2)" }}>
-              <li>One fully priced trip every month, chosen for you</li>
+              <li>Curated trips on-demand</li>
               <li>Flights, stays and experiences booked on your say-so</li>
               <li>Everything the free plan does, for every trip</li>
               <li>A human planner when the concierge is unsure</li>
             </ul>
             <form action="/api/checkout" method="POST">
-              <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>Start your free week</button>
+              <button type="submit" className="btn btn-primary" style={{ width: "100%" }}>Get Started</button>
             </form>
             <p className="small muted">$12.99 a month after 7 days. Cancel anytime from your account page.</p>
           </div>
@@ -156,7 +172,7 @@ export default function Home() {
       </section>
 
       {/* Closing band */}
-      <PhotoBand photo={photos.gruyeres} title="Somewhere is waiting." cta={{ label: "Start your free week", href: "#pricing" }} height="60svh" />
+      <PhotoBand photo={photos.gruyeres} title="Somewhere is waiting." cta={{ label: "Get Started", href: "#pricing" }} height="60svh" />
 
       <Footer />
     </main>

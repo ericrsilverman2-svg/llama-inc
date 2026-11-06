@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { ParallaxImage } from "@/components/ParallaxImage";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { PhotoCard } from "@/components/PhotoCard";
@@ -24,13 +24,13 @@ export default function Premium() {
         </div>
       </div>
 
-      <section className="photo" style={{ position: "relative", minHeight: "88svh", display: "flex", flexDirection: "column" }}>
-        <Image src={photos.mykines.src} alt={photos.mykines.alt} fill priority sizes="100vw" style={{ objectFit: "cover" }} />
+      <section className="photo" data-reveal style={{ position: "relative", overflow: "hidden", minHeight: "88svh", display: "flex", flexDirection: "column" }}>
+        <ParallaxImage photo={photos.mykines} speed={0.22} priority />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, rgba(20,19,17,0.25) 0%, rgba(20,19,17,0) 30%, rgba(20,19,17,0.7) 100%)" }} />
         <div style={{ position: "relative" }}>
           <Nav onPhoto />
         </div>
-        <div className="container hero-grid" style={{ position: "relative", marginTop: "auto", paddingBottom: "var(--space-10)", color: "var(--on-photo)" }}>
+        <div className="container hero-grid fx-up" style={{ position: "relative", marginTop: "auto", paddingBottom: "var(--space-10)", color: "var(--on-photo)", textShadow: "0 1px 24px rgba(20,19,17,0.55)" }}>
           <div>
             <div className="label" style={{ color: "var(--on-photo)", opacity: 0.8 }}>This month · Pick 7 of 12</div>
             <h1 style={{ marginTop: "var(--space-4)", maxWidth: "12ch", fontSize: 56, lineHeight: "54px" }}>Mykines, Faroe Islands</h1>

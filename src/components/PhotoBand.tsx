@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { ParallaxImage } from "@/components/ParallaxImage";
 import type { Photo } from "@/lib/photos";
 
 // Full-bleed photo with a short line of copy. Scrim only where the text sits.
@@ -22,20 +22,22 @@ export function PhotoBand({
   return (
     <section
       className="photo"
-      style={{ position: "relative", minHeight: height, display: "flex", alignItems: "flex-end" }}
+      data-reveal
+      style={{ position: "relative", overflow: "hidden", minHeight: height, display: "flex", alignItems: "flex-end" }}
     >
-      <Image src={photo.src} alt={photo.alt} fill sizes="100vw" style={{ objectFit: "cover" }} />
+      <ParallaxImage photo={photo} />
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(to top, var(--scrim) 0%, rgba(20,19,17,0.35) 35%, rgba(20,19,17,0) 65%)",
+          background: "linear-gradient(to top, rgba(20,19,17,0.88) 0%, rgba(20,19,17,0.62) 30%, rgba(20,19,17,0.28) 60%, rgba(20,19,17,0.08) 100%)",
         }}
       />
       <div
-        className="container"
+        className="container fx-up"
         style={{
           position: "relative",
+          textShadow: "0 1px 24px rgba(20,19,17,0.55)",
           paddingTop: "var(--space-16)",
           paddingBottom: "var(--space-16)",
           color: "var(--on-photo)",
@@ -45,7 +47,7 @@ export function PhotoBand({
           textAlign: align === "right" ? "right" : "left",
         }}
       >
-        <div className="label" style={{ color: "var(--on-photo)", opacity: 0.8 }}>
+        <div className="label" style={{ color: "var(--on-photo)", opacity: 0.95 }}>
           {eyebrow ?? photo.place}
         </div>
         <h2 style={{ marginTop: "var(--space-4)", maxWidth: "18ch" }}>{title}</h2>
@@ -58,7 +60,7 @@ export function PhotoBand({
           </a>
         )}
         {eyebrow && (
-          <div className="small" style={{ marginTop: "var(--space-6)", opacity: 0.7 }}>
+          <div className="small" style={{ marginTop: "var(--space-6)", opacity: 0.85 }}>
             {photo.place}
           </div>
         )}

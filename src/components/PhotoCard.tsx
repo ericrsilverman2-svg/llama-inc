@@ -27,6 +27,7 @@ export function PhotoCard({
         alt={photo.alt}
         fill
         sizes="(min-width: 900px) 360px, 100vw"
+        className="fx-zoom"
         style={{ objectFit: "cover" }}
       />
       <div
@@ -46,7 +47,7 @@ export function PhotoCard({
           color: "var(--on-photo)",
         }}
       >
-        <div className="label" style={{ color: "var(--on-photo)", opacity: 0.8 }}>
+        <div className="label" style={{ color: "var(--on-photo)", opacity: 0.95 }}>
           {eyebrow}
         </div>
         <div

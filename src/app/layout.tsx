@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ScrollFx } from "@/components/ScrollFx";
 
 export const metadata: Metadata = {
   title: "Llama Inc.",
@@ -24,7 +25,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href={fontsHref} rel="stylesheet" />
       </head>
-      <body>{children}</body>
+      <body>
+        <ScrollFx />
+        {children}
+      </body>
     </html>
   );
 }
