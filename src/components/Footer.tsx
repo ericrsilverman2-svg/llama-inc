@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { credits } from "@/lib/photos";
 
 export function Footer() {
@@ -12,7 +13,7 @@ export function Footer() {
         <p>
           Llama Inc. is a demo built for a Stripe written exercise. Payments run in
           Stripe sandbox mode; no card is charged. Use test card 4242 4242 4242 4242
-          with any future date and any CVC.
+          with any future date and any CVC. <Link href="/terms">Terms of service</Link>.
         </p>
         <p style={{ maxWidth: "none" }}>
           Photography:{" "}

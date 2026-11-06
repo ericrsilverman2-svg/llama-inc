@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { getStripe } from "@/lib/stripe";
@@ -11,6 +12,8 @@ export default async function Success({
   searchParams: Promise<{ session_id?: string }>;
 }) {
   const { session_id } = await searchParams;
+  // Format dates the way the visitor expects: "13 November 2026" in Paris, "November 13, 2026" in LA.
+  const locale = (await headers()).get("accept-language")?.split(",")[0]?.trim() || "en-US";
 
   let headline = "You are in.";
   let detail =
@@ -34,10 +37,7 @@ export default async function Success({
           ? session.subscription
           : null;
       if (sub?.trial_end) {
-        trialEnds = new Date(sub.trial_end * 1000).toLocaleDateString("en-US", {
-          month: "long",
-          day: "numeric",
-        });
+        trialEnds = new Intl.DateTimeFormat(locale, { dateStyle: "long" }).format(new Date(sub.trial_end * 1000));
       }
       // With a trial, payment_status is "no_payment_required" and that is a success.
       if (session.status !== "complete") {

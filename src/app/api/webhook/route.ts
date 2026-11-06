@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
+import { notifyMember } from "@/lib/notify";
 
-// Receives the three events the SaaS guide lists as the minimum:
-//   checkout.session.completed  -> a new subscription was started
-//   invoice.paid                -> a billing period was paid (initial and renewals)
-//   invoice.payment_failed      -> a renewal failed; point the customer to the portal
+// Receives the three events the SaaS guide lists as the minimum, plus three that
+// matter once members are international:
+//   checkout.session.completed       -> a new subscription was started
+//   invoice.paid                     -> a billing period was paid (initial and renewals)
+//   invoice.payment_failed           -> a renewal failed; point the customer to the portal
+//   invoice.payment_action_required  -> a renewal needs 3DS/SCA; the member must act
+//   customer.subscription.updated    -> past due after retries, or cancellation scheduled
+//   customer.subscription.deleted    -> the subscription ended
 //
 // The demo has no database, so "provisioning" is a log line. The shape is what a
 // real app would do: verify the signature, dedupe on event.id, act on the type.
@@ -70,6 +75,49 @@ export async function POST(req: Request) {
         invoice: invoice.id,
         customer: invoice.customer,
       });
+      await notifyMember(customerId(invoice.customer), { kind: "payment_failed", invoiceId: invoice.id });
+      break;
+    }
+    case "invoice.payment_action_required": {
+      // Off-session renewal hit a 3D Secure / SCA challenge. Stripe cannot complete it
+      // alone; the hosted invoice page lets the member authenticate.
+      const invoice = event.data.object;
+      console.log("[webhook] invoice needs authentication", {
+        invoice: invoice.id,
+        customer: invoice.customer,
+        hosted_invoice_url: invoice.hosted_invoice_url,
+      });
+      await notifyMember(customerId(invoice.customer), {
+        kind: "payment_action_required",
+        invoiceId: invoice.id,
+        hostedInvoiceUrl: invoice.hosted_invoice_url ?? null,
+      });
+      break;
+    }
+    case "customer.subscription.updated": {
+      const sub = event.data.object;
+      const prev = event.data.previous_attributes ?? {};
+      const cid = customerId(sub.customer);
+      if ("status" in prev && sub.status === "past_due") {
+        console.log("[webhook] subscription past due", { subscription: sub.id, customer: cid });
+        await notifyMember(cid, { kind: "past_due" });
+      }
+      if ("cancel_at_period_end" in prev || "cancel_at" in prev) {
+        if (sub.cancel_at_period_end || sub.cancel_at) {
+          const endsAt = sub.cancel_at ? new Date(sub.cancel_at * 1000) : null;
+          console.log("[webhook] cancellation scheduled", { subscription: sub.id, customer: cid, endsAt });
+          await notifyMember(cid, { kind: "cancellation_scheduled", endsAt });
+        } else {
+          console.log("[webhook] cancellation reverted", { subscription: sub.id, customer: cid });
+          await notifyMember(cid, { kind: "cancellation_reverted" });
+        }
+      }
+      break;
+    }
+    case "customer.subscription.deleted": {
+      const sub = event.data.object;
+      console.log("[webhook] subscription ended", { subscription: sub.id, customer: sub.customer });
+      await notifyMember(customerId(sub.customer), { kind: "subscription_ended" });
       break;
     }
     default:
@@ -77,4 +125,8 @@ export async function POST(req: Request) {
   }
 
   return NextResponse.json({ received: true });
+}
+
+function customerId(c: string | { id: string } | null): string | null {
+  return typeof c === "string" ? c : c?.id ?? null;
 }
